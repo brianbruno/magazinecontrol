@@ -16,7 +16,12 @@ window.Vue = require('vue');
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('cards-venda', require('./components/CardsVenda.vue'));
 
 const app = new Vue({
     el: '#app'
+});
+
+const cardsVenda = new Vue({
+    el: '#app-5'
 });

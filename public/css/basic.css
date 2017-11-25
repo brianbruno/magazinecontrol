@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Comfortaa);@import url(https://fonts.googleapis.com/css?family=Baloo);html,
 body {
-  background-color: rgba(234, 237, 239, 0.58);
+  background-color: rgba(240, 255, 234, 0.08);
   color: #3e243b;
   font-family: 'Comfortaa', sans-serif;
   font-weight: 100;
@@ -57,7 +57,7 @@ body {
 }
 
 .txt-form {
-  background-color: rgba(255, 0, 213, 0.04);
+  background-color: #f9f4e3;
   font-family: 'Baloo', cursive;
   font-size: 20px;
   outline: none;
