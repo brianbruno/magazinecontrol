@@ -1,24 +1,27 @@
-@import "variables";
-@import url('https://fonts.googleapis.com/css?family=Comfortaa');
-@import url('https://fonts.googleapis.com/css?family=Baloo');
-
-html, body {
-   background-color: $body-bg;
-   color: #3e243b;
-   font-family: 'Comfortaa', sans-serif;
-   font-weight: 100;
-   height: 100vh;
-   margin: 0;
- }
+@import url(https://fonts.googleapis.com/css?family=Comfortaa);@import url(https://fonts.googleapis.com/css?family=Baloo);html,
+body {
+  background-color: rgba(234, 237, 239, 0.58);
+  color: #3e243b;
+  font-family: 'Comfortaa', sans-serif;
+  font-weight: 100;
+  height: 100vh;
+  margin: 0;
+}
 
 .full-height {
   height: 100vh;
 }
 
 .flex-center {
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .position-ref {
@@ -60,7 +63,9 @@ html, body {
   outline: none;
   border: none;
 }
- .btn-form {
-   outline: none;
-   border: none;
- }
+
+.btn-form {
+  outline: none;
+  border: none;
+}
+
