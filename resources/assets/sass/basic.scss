@@ -64,3 +64,8 @@ html, body {
    outline: none;
    border: none;
  }
+
+ .card-magazine {
+   border-color : $brand-magazine;
+   border-radius: inherit;
+ }

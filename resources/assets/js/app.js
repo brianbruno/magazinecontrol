@@ -23,5 +23,5 @@ const app = new Vue({
 });
 
 const cardsVenda = new Vue({
-    el: '#app-5'
+    el: '#cardsVenda'
 });

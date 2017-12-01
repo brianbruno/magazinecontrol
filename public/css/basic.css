@@ -69,3 +69,8 @@ body {
   border: none;
 }
 
+.card-magazine {
+  border-color: #755CDE;
+  border-radius: inherit;
+}
+
