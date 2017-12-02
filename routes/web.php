@@ -13,8 +13,14 @@
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', function () {
+    return view('home/index');
+})->middleware('auth')->name('home');
+
+Route::get('vendas', function () {
+    return view('gestao/vendas/index');
+})->middleware('auth');
