@@ -6,8 +6,8 @@
         <div class="container">
             <div class="flex-center position-ref full-height">
                 <div class="content">
-                    <div class="title m-b-md">
-                        Magazine Control
+                    <div >
+                        <h1 class="center">Magazine Control</h1>
                     </div>
 
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="form-group center">
-                            <button type="submit" class="btn btn-dark btn-lg">Login</button>
+                            <button type="submit" class="waves-effect waves-light btn-large teal darken-4">Login <i class="material-icons right">send</i></button>
                         </div>
                     </form>
                 </div>

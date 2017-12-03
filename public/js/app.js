@@ -204,9 +204,9 @@ module.exports = function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(3);
-__webpack_require__(14);
-__webpack_require__(15);
-module.exports = __webpack_require__(16);
+__webpack_require__(16);
+__webpack_require__(17);
+module.exports = __webpack_require__(18);
 
 
 /***/ }),
@@ -221,6 +221,7 @@ module.exports = __webpack_require__(16);
  */
 
 window.Vue = __webpack_require__(4);
+window.Formatter = __webpack_require__(8);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -228,15 +229,15 @@ window.Vue = __webpack_require__(4);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', __webpack_require__(8));
-Vue.component('cards-venda', __webpack_require__(11));
+Vue.component('example-component', __webpack_require__(10));
+Vue.component('cards-venda', __webpack_require__(13));
 
 var app = new Vue({
   el: '#app'
 });
 
 var cardsVenda = new Vue({
-  el: '#cardsVenda'
+  el: '#app'
 });
 
 /***/ }),
@@ -11384,12 +11385,311 @@ process.umask = function() { return 0; };
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+/* jshint node: true */
+
+
+var reVariable = /\{\{\s*([^\}]+?)\s*\}\}/;
+var mods = __webpack_require__(9);
+
+/**
+  # formatter
+
+  This is a simple library designed to do one thing and one thing only -
+  replace variables in strings with variable values.  It is built in such a
+  way that the formatter strings are parsed and you are provided with a
+  function than can efficiently be called to provide the custom output.
+
+  ## Example Usage
+
+  <<< examples/likefood.js
+
+  __NOTE__: Formatter is not designed to be a templating library and if
+  you are already using something like Handlebars or
+  [hogan](https://github.com/twitter/hogan.js) in your library or application
+  stack consider using them instead.
+
+  ## Using named variables
+
+  In the examples above we saw how the formatter can be used to replace
+  function arguments in a formatter string.  We can also set up a formatter
+  to use particular key values from an input string instead if that is more
+  suitable:
+
+  <<< examples/likefood-named.js
+
+  ## Nested Property Values
+
+  Since version `0.1.0` you can also access nested property values, as you
+  can with templates like handlebars.
+
+  ## Partial Execution
+
+  Since version `0.3.x` formatter also supports partial execution when using
+  indexed arguments (e.g. `{{ 0 }}`, `{{ 1 }}`, etc).  For example:
+
+  <<< examples/partial.js
+
+  In the case above, the original formatter function returned by `formatter`
+  did not receive enough values to resolve all the required variables.  As
+  such it returned a function ready to accept the remaining values.
+
+  Once all values have been received the output will be generated.
+
+  ## Performance
+
+  I've done some
+  [performance benchmarks](http://jsperf.com/formatter-performance) and
+  formatter is faster than handlebars, but that isn't surprising as it is far
+  simpler and doesn't have the smarts of HBS.  The test is really there to
+  ensure that I didn't do anything too silly...
+
+  Additionally, it should be noted that using formatter is 100% slower than
+  concatenating strings, so don't use it where performance is critical. 
+  Do use it where not repeating yourself is.
+**/
+
+var formatter = module.exports = function(format, opts) {
+  // extract the matches from the string
+  var parts = [];
+  var output = [];
+  var chunk;
+  var varname;
+  var varParts;
+  var match = reVariable.exec(format);
+  var isNumeric;
+  var outputIdx = 0;
+  var ignoreNumeric = (opts || {}).ignoreNumeric;
+
+  while (match) {
+    // get the prematch chunk
+    chunk = format.slice(0, match.index);
+    
+    // if we have a valid chunk, add it to the parts
+    if (chunk) {
+      output[outputIdx++] = chunk;
+    }
+    
+    varParts = match[1].split(/\s*\|\s*/);
+    match[1] = varParts[0];
+    
+    // extract the varname
+    varname = parseInt(match[1], 10);
+    isNumeric = !isNaN(varname);
+
+    // if this is a numeric replacement expression, and we are ignoring
+    // those expressions then pass it through to the output
+    if (ignoreNumeric && isNumeric) {
+      output[outputIdx++] = match[0];
+    }
+    // otherwise, handle normally
+    else {
+      // extract the expression and add it as a function
+      parts[parts.length] = {
+        idx: (outputIdx++),
+        numeric: isNumeric,
+        varname: isNumeric ? varname : match[1],
+        modifiers: varParts.length > 1 ? createModifiers(varParts.slice(1)) : []
+      };
+    }
+
+    // remove this matched chunk and replacer from the string
+    format = format.slice(match.index + match[0].length);
+
+    // check for the next match
+    match = reVariable.exec(format);
+  }
+  
+  // if we still have some of the format string remaining, add it to the list
+  if (format) {
+    output[outputIdx++] = format;
+  }
+
+  return collect(parts, output);
+};
+
+formatter.error = function(message) {
+  // create the format
+  var format = formatter(message);
+  
+  return function(err) {
+    var output;
+    
+    // if no error has been supplied, then pass it straight through
+    if (! err) {
+      return;
+    }
+
+    output = new Error(
+      format.apply(null, Array.prototype.slice.call(arguments, 1)));
+
+    output._original = err;
+
+    // return the new error
+    return output;
+  };
+};
+
+function collect(parts, resolved, indexShift) {
+  // default optionals
+  indexShift = indexShift || 0;
+
+  return function() {
+    var output = [].concat(resolved);
+    var unresolved;
+    var ii;
+    var part;
+    var partIdx;
+    var propNames;
+    var val;
+    var numericResolved = [];
+
+    // find the unresolved parts
+    unresolved = parts.filter(function(part) {
+      return typeof output[part.idx] == 'undefined';
+    });
+
+    // initialise the counter
+    ii = unresolved.length;
+
+    // iterate through the unresolved parts and attempt to resolve the value
+    for (; ii--; ) {
+      part = unresolved[ii];
+
+      if (typeof part == 'object') {
+        // if this is a numeric part, this is a simple index lookup
+        if (part.numeric) {
+          partIdx = part.varname - indexShift;
+          if (arguments.length > partIdx) {
+            output[part.idx] = arguments[partIdx];
+            if (numericResolved.indexOf(part.varname) < 0) {
+              numericResolved[numericResolved.length] = part.varname;
+            }
+          }
+        }
+        // otherwise, we are doing a recursive property search
+        else if (arguments.length > 0) {
+          propNames = (part.varname || '').split('.');
+
+          // initialise the output from the last valid argument
+          output[part.idx] = (arguments[arguments.length - 1] || {});
+          while (output[part.idx] && propNames.length > 0) {
+            val = output[part.idx][propNames.shift()];
+            output[part.idx] = typeof val != 'undefined' ? val : '';
+          }
+        }
+
+        // if the output was resolved, then apply the modifier
+        if (typeof output[part.idx] != 'undefined' && part.modifiers) {
+          output[part.idx] = applyModifiers(part.modifiers, output[part.idx]);
+        }
+      }
+    }
+
+    // reasses unresolved (only caring about numeric parts)
+    unresolved = parts.filter(function(part) {
+      return part.numeric && typeof output[part.idx] == 'undefined';
+    });
+
+    // if we have no unresolved parts, then return the value
+    if (unresolved.length === 0) {
+      return output.join('');
+    }
+
+    // otherwise, return the collect function again
+    return collect(
+      parts,
+      output,
+      indexShift + numericResolved.length
+    );
+  };
+}
+
+function applyModifiers(modifiers, value) {
+  // if we have modifiers, then tweak the output
+  for (var ii = 0, count = modifiers.length; ii < count; ii++) {
+    value = modifiers[ii](value);
+  }
+
+  return value;
+}
+
+function createModifiers(modifierStrings) {
+  var modifiers = [];
+  var parts;
+  var fn;
+  
+  for (var ii = 0, count = modifierStrings.length; ii < count; ii++) {
+    parts = modifierStrings[ii].split(':');
+    fn = mods[parts[0].toLowerCase()];
+    
+    if (fn) {
+      modifiers[modifiers.length] = fn.apply(null, parts.slice(1));
+    }
+  }
+  
+  return modifiers;
+}
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* jshint node: true */
+
+
+/**
+  ## Modifiers
+
+**/
+
+/**
+  ### Length Modifier (len)
+
+  The length modifier is used to ensure that a string is exactly the length specified.  The string is sliced to the required max length, and then padded out with spaces (or a specified character) to meet the required length.
+
+  ```js
+  // pad the string test to 10 characters
+  formatter('{{ 0|len:10 }}')('test');   // 'test      '
+
+  // pad the string test to 10 characters, using a as the padding character
+  formatter('{{ 0|len:10:a }}')('test'); // 'testaaaaaa'
+  ```
+**/
+exports.len = function(length, padder) {
+  var testInt = parseInt(padder, 10);
+  var isNumber;
+
+  // default the padder to a space
+  padder = (! isNaN(testInt)) ? testInt : (padder || ' ');
+
+  // check whether we have a number for padding (we will pad left if we do)
+  isNumber = typeof padder == 'number';
+  
+  return function(input) {
+    var output = input.toString().slice(0, length);
+    
+    // pad the string to the required length
+    while (output.length < length) {
+      output = isNumber ? padder + output : output + padder;
+    }
+    
+    return output;
+  };
+};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(9)
+var __vue_script__ = __webpack_require__(11)
 /* template */
-var __vue_template__ = __webpack_require__(10)
+var __vue_template__ = __webpack_require__(12)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -11429,7 +11729,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11452,7 +11752,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -11487,15 +11787,15 @@ if (false) {
 }
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(12)
+var __vue_script__ = __webpack_require__(14)
 /* template */
-var __vue_template__ = __webpack_require__(13)
+var __vue_template__ = __webpack_require__(15)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -11535,7 +11835,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11562,7 +11862,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -11570,15 +11870,13 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "cardsVenda" } }, [
-    _c("div", { staticClass: "card deep-purple lighten-5 col s6" }, [
+    _c("div", { staticClass: "card deep-purple lighten-5 col s12 m12 l6" }, [
       _c("div", { staticClass: "card-content" }, [
-        _c("span", { staticClass: "card-title grey-text text-darken-4 " }, [
+        _c("span", { staticClass: "card-title grey-text text-darken-4" }, [
           _vm._v(_vm._s(_vm.nomeCampo))
         ]),
         _vm._v(" "),
-        _c("h4", { staticClass: "card-text" }, [
-          _vm._v("R$ " + _vm._s(_vm.valor))
-        ])
+        _c("h4", { staticClass: "card-text" }, [_vm._v(_vm._s(_vm.valor))])
       ])
     ])
   ])
@@ -11594,19 +11892,19 @@ if (false) {
 }
 
 /***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 16 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

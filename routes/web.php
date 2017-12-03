@@ -12,15 +12,30 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+    if(Auth::check()){
+        return view('home/index');
+    }else{
+        return view('index');
+    }
 })->name('index');
 
 Auth::routes();
+
+Route::resource('produtos', 'ProdutoController');
 
 Route::get('/home', function () {
     return view('home/index');
 })->middleware('auth')->name('home');
 
-Route::get('vendas', function () {
-    return view('gestao/vendas/index');
-})->middleware('auth');
+Route::prefix('vendas')->group(function () {
+    Route::get('/', function () {
+        return view('gestao/vendas/index');
+    }, ['nomeTela' => 'Vendas'])->middleware('auth')->name('vendas');
+
+    Route::get('/produtos', function () {
+        return view('gestao/vendas/produtos');
+    }, ['nomeTela' => 'Produtos'])->middleware('auth')->name('produtos');
+});
+
+
+

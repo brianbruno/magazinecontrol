@@ -3,11 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+class Filial extends Model {
 
-class Produto extends Model {
-
-    protected $fillable = ['CDPRODUTO','NMPRODUTO'];
+    protected $fillable = ['CDFILIAL','NMFILIAL'];
     protected $guarded = ['id', 'created_at', 'update_at'];
-    protected $table = 'produtos';
+    protected $table = 'filial';
 
 }

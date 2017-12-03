@@ -25,7 +25,7 @@
 
         @auth
             <ul id="dropdown" class="dropdown-content">
-                <li><a href="{{ url('vendas') }}">Vendas</a></li>
+                <li><a href="vendas">Vendas</a></li>
                 <li><a href="#!">Loja</a></li>
                 <li class="divider"></li>
                 <li><a href="#!">Pessoal</a></li>
@@ -40,7 +40,7 @@
             </ul>
             <nav class="indigo lighten-5">
                 <div class="nav-wrapper">
-                    <a href="{{ url('/') }}" class="brand-logo grey-text text-darken-4">{{ config('app.name', 'Laravel') }}</a>
+                    <a href="{{ url('/') }}" class="brand-logo grey-text text-darken-4 hide-on-med-and-down">{{ config('app.name', 'Laravel') }}</a>
                     <span class="brand-logo center teal-text text-darken-4">Dashboard</span>
                     <ul class="right hide-on-med-and-down">
                         <!-- Dropdown Trigger -->
