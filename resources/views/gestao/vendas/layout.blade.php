@@ -6,7 +6,7 @@
         <div class="nav-wrapper">
             <a href="{{ route('vendas') }}" class="brand-logo">Gestão</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="sass.html">Vendas</a></li>
+                <li><a href="{{ route('vendas') }}">Vendas</a></li>
                 <li><a href="{{ route('produtos') }}">Produtos</a></li>
             </ul>
         </div>
@@ -15,3 +15,17 @@
     @yield('contents')
 
 @endsection
+
+@section('script')
+    <script>
+        $(document).ready(function () {
+            $('.tabs').tabs();
+        });
+
+    </script>
+
+    @yield('layoutScript')
+
+@endsection
+
+

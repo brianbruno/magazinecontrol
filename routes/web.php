@@ -21,8 +21,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::resource('produtos', 'ProdutoController');
-
 Route::get('/home', function () {
     return view('home/index');
 })->middleware('auth')->name('home');
@@ -32,10 +30,19 @@ Route::prefix('vendas')->group(function () {
         return view('gestao/vendas/index');
     }, ['nomeTela' => 'Vendas'])->middleware('auth')->name('vendas');
 
-    Route::get('/produtos', function () {
-        return view('gestao/vendas/produtos');
-    }, ['nomeTela' => 'Produtos'])->middleware('auth')->name('produtos');
-});
+    Route::resource('produtos', 'ProdutoController', [
+        'names' => [
+            'index'             => 'produtos',
+            'store'             => 'produtos.store',
+            'show'              => 'produtos.show'
+        ]
+    ])->middleware('auth');
 
+    Route::get('/produtos/codigoInserido/{cod}',function($id){
+        $app = app();
+        $controller = $app->make('\App\Http\Controllers\ProdutoController');
+        return $controller->searchCDPRODUTO($id);
+    });
+});
 
 
