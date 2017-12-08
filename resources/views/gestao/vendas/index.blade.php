@@ -8,7 +8,7 @@
     </div>
     <div class="divider"></div>
     <div class="row">
-        <cards-venda valor="78" nome-campo="Produtos cadastrados"></cards-venda>
+        <cards-venda valor="{{ $resultado }}" nome-campo="Produtos cadastrados"></cards-venda>
         <cards-venda valor="Arroz Fino Grão 5KG" nome-campo="Produto mais vendido"></cards-venda>
     </div>
 

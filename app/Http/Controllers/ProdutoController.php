@@ -139,6 +139,23 @@ class ProdutoController extends Controller
     /**
      * Display the specified resource.
      *
+     * @return \Illuminate\Http\Response
+     */
+    public static function produtosCadastrados()
+    {
+        $resultado = DB::table('produtos')
+            ->select(DB::raw('COUNT(produtos.id) as produtosCadastrados'))
+            ->get();
+
+        $resultado = $resultado[0]->produtosCadastrados;
+
+        return compact('resultado');
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
      * @param String $returnType
      * @param array $array
      * @param String $view

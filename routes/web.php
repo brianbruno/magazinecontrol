@@ -26,9 +26,14 @@ Route::get('/home', function () {
 })->middleware('auth')->name('home');
 
 Route::prefix('vendas')->group(function () {
-    Route::get('/', function () {
-        return view('gestao/vendas/index');
-    }, ['nomeTela' => 'Vendas'])->middleware('auth')->name('vendas');
+
+    Route::resource('/', 'VendaController', [
+        'names' => [
+            'index'             => 'vendas',
+            'store'             => 'vendas.store',
+            'show'              => 'vendas.show'
+        ]
+    ])->middleware('auth');
 
     Route::resource('produtos', 'ProdutoController', [
         'names' => [
@@ -37,6 +42,7 @@ Route::prefix('vendas')->group(function () {
             'show'              => 'produtos.show'
         ]
     ])->middleware('auth');
+
 
     Route::get('/produtos/codigoInserido/{cod}',function($id){
         $app = app();

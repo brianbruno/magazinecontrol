@@ -41,14 +41,21 @@
             <nav class="indigo lighten-5 nav-extended">
                 <div class="nav-wrapper">
                     <a href="{{ url('/') }}" class="brand-logo grey-text text-darken-4 hide-on-med-and-down">{{ config('app.name', 'Laravel') }}</a>
-                    <span class="brand-logo center teal-text text-darken-4">Dashboard</span>
+                    <a href="#" data-target="mobile-nav" class="sidenav-trigger right"><i class="material-icons black-text">menu</i></a>
+                    <a href="{{ url('/') }}" class="brand-logo center teal-text text-darken-4">Dashboard</a>
                     <ul class="right hide-on-med-and-down">
                         <!-- Dropdown Trigger -->
                         <li><a class="dropdown-trigger grey-text text-darken-4" href="#!" data-target="dropdown">Gestão<i class="material-icons right">arrow_drop_down</i></a></li>
                         <li><a class="dropdown-trigger grey-text text-darken-4" href="#!" data-target="dropdownUser">{{ Auth::user()->name }}<i class="material-icons right">arrow_drop_down</i></a></li>
                     </ul>
-                </div>
 
+                    <ul class="sidenav" id="mobile-nav">
+                        <li><a class="dropdown-trigger grey-text text-darken-4" href="#!" data-target="dropdown">Gestão<i class="material-icons right">arrow_drop_down</i></a></li>
+                        <li class="divider"></li>
+                        <li><a class="dropdown-trigger grey-text text-darken-4" href="#!" data-target="dropdownUser">{{ Auth::user()->name }}<i class="material-icons right">arrow_drop_down</i></a></li>
+                    </ul>
+
+                </div>
                 <!-- Stripe -->
                 <div class="nav-content">
                     <div class="card-panel yellow lighten-5">
@@ -76,6 +83,7 @@
         $(document).ready(function () {
             $(".dropdown-trigger").dropdown();
             $('.modal').modal();
+            $('.sidenav').sidenav();
         });
 
     </script>
