@@ -6,9 +6,9 @@
         <div class="row">
             <div class="col s12">
                 <ul class="tabs">
-                    <li class="tab col s3"><a href="#produtos">Produtos</a></li>
-                    <li class="tab col s3"><a href="#todosProdutos">Todos os produtos</a></li>
-                    <li class="tab col s3"><a class="waves-effect waves-light" href="#cadProd">Cadastrar produto</a></li>
+                    <li class="tab col s4"><a class="active" href="#produtos">Produtos</a></li>
+                    <li class="tab col s4"><a href="#todosProdutos">Todos os produtos</a></li>
+                    <li class="tab col s4"><a class="waves-effect waves-light" href="#cadProd">Cadastrar produto</a></li>
                 </ul>
             </div>
         </div>
@@ -96,7 +96,13 @@
 @section('layoutScript')
 
     <script>
+
         $(document).ready(function () {
+            $('.tabs').tabs();
+        });
+
+        /*$(document).ready(function () {
+            $('.tabs').tabs();
             $('#divUnicoCod').hide();
             $('#codigoProduto').change(function() {
                 let divUnicoCod = $('#divUnicoCod');
@@ -130,7 +136,7 @@
                     }
                 });
             });
-        });
+        });*/
 
     </script>
 

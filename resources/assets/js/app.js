@@ -7,6 +7,7 @@
 
 window.Vue = require('vue');
 window.Formatter = require('formatter');
+window.$ = window.jQuery = require('jquery')
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -16,11 +17,16 @@ window.Formatter = require('formatter');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('cards-venda', require('./components/CardsVenda.vue'));
+Vue.component('card-dashboard', require('./components/CardDashboardLink.vue'));
 
 const app = new Vue({
     el: '#app'
 });
 
 const cardsVenda = new Vue({
+    el: '#app'
+});
+
+const cardDarshboardLink = new Vue({
     el: '#app'
 });

@@ -17,12 +17,6 @@
 @endsection
 
 @section('script')
-    <script>
-        $(document).ready(function () {
-            $('.tabs').tabs();
-        });
-
-    </script>
 
     @yield('layoutScript')
 

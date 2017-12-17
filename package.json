@@ -17,6 +17,8 @@
         "laravel-mix": "^1.0",
         "lodash": "^4.17.4",
         "vue": "^2.5.7",
-        "formatter": "^0.4.1"
+        "formatter": "^0.4.1",
+        "hover.css": "^2.2.1",
+        "materialize-css": "^1.0.0-alpha.2"
     }
 }
