@@ -17,7 +17,7 @@
             @foreach (['danger', 'warning', 'success', 'info'] as $msg)
                 @if(Session::has('alert-' . $msg))
 
-                    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+                    <p>{{ Session::get('alert-' . $msg) }} teste</p>
                 @endif
             @endforeach
         </div> <!-- end .flash-message -->
@@ -46,7 +46,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="7">Nenhum produto cadasstrado!</td>
+                            <td colspan="7">Nenhum produto cadastrado!</td>
                         </tr>
                     @endif
                 </tbody>
@@ -99,10 +99,6 @@
 
         $(document).ready(function () {
             $('.tabs').tabs();
-        });
-
-        /*$(document).ready(function () {
-            $('.tabs').tabs();
             $('#divUnicoCod').hide();
             $('#codigoProduto').change(function() {
                 let divUnicoCod = $('#divUnicoCod');
@@ -136,7 +132,7 @@
                     }
                 });
             });
-        });*/
+        });
 
     </script>
 

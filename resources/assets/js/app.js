@@ -30,3 +30,7 @@ const cardsVenda = new Vue({
 const cardDarshboardLink = new Vue({
     el: '#app'
 });
+
+const cadastrarProduto = new Vue({
+    el: '#app'
+});
