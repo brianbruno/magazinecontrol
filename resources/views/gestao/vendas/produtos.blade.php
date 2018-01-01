@@ -24,15 +24,16 @@
 
         <div id="produtos" class="col s12">
             <cards-venda valor="Arroz Fino Grão 5KG" nome-campo="Produto mais vendido este mês"></cards-venda>
-            <cards-venda valor="Skol Beats Sense Lata 310ml" nome-campo="Produto mais vendido hoje"></cards-venda>
+            <cards-venda valor="Skol Beats Sense 310ml" nome-campo="Produto mais vendido hoje"></cards-venda>
         </div>
         <div id="todosProdutos" class="col s12">
 
-            <table>
+            <table id="tabelaTodosProdutos">
                 <thead>
                 <tr>
                     <th>Código</th>
                     <th>Nome do Produto</th>
+                    <th>Editar</th>
                 </tr>
                 </thead>
 
@@ -40,8 +41,9 @@
                     @if($produtos->count())
                         @foreach($produtos as $produto)
                             <tr>
-                                <td>{{$produto->CDPRODUTO}}</td>
-                                <td>{{$produto->NMPRODUTO}}</td>
+                                <td class="linhaTabela">{{$produto->CDPRODUTO}}</td>
+                                <td class="linhaTabela">{{$produto->NMPRODUTO}}</td>
+                                <td class="linhaTabela hvr-grow-shadow"><a href="#"><i class="material-icons">mode_edit</i></a></td>
                             </tr>
                         @endforeach
                     @else

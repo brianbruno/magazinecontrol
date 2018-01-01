@@ -18,8 +18,14 @@ window.$ = window.jQuery = require('jquery')
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('cards-venda', require('./components/CardsVenda.vue'));
 Vue.component('card-dashboard', require('./components/CardDashboardLink.vue'));
+Vue.component('cadastrar-produto', require('./components/CadastrarProduto.vue'));
+Vue.component('dashboard-cards', require('./components/DashboardCards.vue'));
 
 const app = new Vue({
+    el: '#app'
+});
+
+const dashboardCards = new Vue({
     el: '#app'
 });
 

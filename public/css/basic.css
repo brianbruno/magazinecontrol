@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Comfortaa);@import url(https://fonts.googleapis.com/css?family=Baloo);html,
+@import url(https://fonts.googleapis.com/css?family=Comfortaa);@import url(https://fonts.googleapis.com/css?family=Baloo);@import url(https://fonts.googleapis.com/css?family=Chivo);html,
 body {
   background-color: rgba(240, 255, 234, 0.08);
   color: #3e243b;
@@ -14,5 +14,36 @@ body {
   font-size: 30px;
   outline: none;
   border: none;
+}
+
+.tabs {
+  font-family: 'Chivo', sans-serif !important;
+}
+
+.tabs .tab a {
+  color: #757575 !important;
+}
+
+.tabs .tab a:hover,
+.tabs .tab a.active {
+  background-color: transparent !important;
+  color: #757575 !important;
+}
+
+.tabs .tab.disabled a,
+.tabs .tab.disabled a:hover {
+  color: rgba(102, 147, 153, 0.75) !important;
+}
+
+.tabs .indicator {
+  background-color: #757575 !important;
+}
+
+#tabelaTodosProdutos .linhaTabela {
+  color: #212121 !important;
+}
+
+#tabelaTodosProdutos .linhaTabela i {
+  color: #212121 !important;
 }
 

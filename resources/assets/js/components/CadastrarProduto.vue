@@ -1,7 +1,7 @@
 <template>
     <div id="cadastrarProduto">
         <form class="col s12" action="#" method="post" role="form">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}" >
+            <input type="hidden" name="_token" :v="csrf_token()" >
             <h4>Cadastrar produto</h4>
             <div class="row">
                 <div class="input-field col s6">
@@ -42,7 +42,6 @@
 
         mounted() {
 
-        },
-        props: ['link', 'texto']
+        }
     }
 </script>

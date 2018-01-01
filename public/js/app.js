@@ -204,10 +204,10 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(3);
-__webpack_require__(25);
-__webpack_require__(26);
-__webpack_require__(27);
-module.exports = __webpack_require__(28);
+__webpack_require__(31);
+__webpack_require__(32);
+__webpack_require__(33);
+module.exports = __webpack_require__(34);
 
 
 /***/ }),
@@ -234,8 +234,14 @@ window.$ = window.jQuery = __webpack_require__(10);
 Vue.component('example-component', __webpack_require__(11));
 Vue.component('cards-venda', __webpack_require__(14));
 Vue.component('card-dashboard', __webpack_require__(17));
+Vue.component('cadastrar-produto', __webpack_require__(25));
+Vue.component('dashboard-cards', __webpack_require__(28));
 
 var app = new Vue({
+    el: '#app'
+});
+
+var dashboardCards = new Vue({
     el: '#app'
 });
 
@@ -244,6 +250,10 @@ var cardsVenda = new Vue({
 });
 
 var cardDarshboardLink = new Vue({
+    el: '#app'
+});
+
+var cadastrarProduto = new Vue({
     el: '#app'
 });
 
@@ -22668,24 +22678,359 @@ if (false) {
 
 /***/ }),
 /* 25 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(26)
+/* template */
+var __vue_template__ = __webpack_require__(27)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\CadastrarProduto.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ff557c6e", Component.options)
+  } else {
+    hotAPI.reload("data-v-ff557c6e", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
 
 /***/ }),
 /* 26 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {}
+});
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "cadastrarProduto" } }, [
+    _c(
+      "form",
+      {
+        staticClass: "col s12",
+        attrs: { action: "#", method: "post", role: "form" }
+      },
+      [
+        _c("input", {
+          attrs: { type: "hidden", name: "_token", v: _vm.csrf_token() }
+        }),
+        _vm._v(" "),
+        _c("h4", [_vm._v("Cadastrar produto")]),
+        _vm._v(" "),
+        _vm._m(0, false, false),
+        _vm._v(" "),
+        _vm._m(1, false, false)
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "input-field col s6" }, [
+        _c("input", {
+          staticClass: "validate",
+          attrs: {
+            id: "codigoProduto",
+            name: "CDPRODUTO",
+            type: "text",
+            maxlength: "11",
+            pattern: "\\d*",
+            required: ""
+          }
+        }),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "codigoProduto" } }, [_vm._v("Código")]),
+        _vm._v(" "),
+        _c("div", { attrs: { id: "divUnicoCod" } }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col s2" }, [
+              _c("div", { staticClass: "preloader-wrapper small active" }, [
+                _c("div", { staticClass: "spinner-layer spinner-green-only" }, [
+                  _c("div", { staticClass: "circle-clipper left" }, [
+                    _c("div", { staticClass: "circle" })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col s10" }, [
+              _c("p", [_vm._v("Checando disponibilidade do código...")])
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-field col s6" }, [
+        _c("input", {
+          staticClass: "validate",
+          attrs: {
+            id: "nomeProduto",
+            name: "NMPRODUTO",
+            type: "text",
+            maxlength: "100",
+            required: ""
+          }
+        }),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "nomeProduto" } }, [_vm._v("Nome")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "right" }, [
+      _c(
+        "button",
+        {
+          staticClass: "modal-action waves-effect waves-green btn-flat",
+          attrs: { type: "submit", id: "btnCadProd", disabled: "" }
+        },
+        [_vm._v("Cadastrar")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ff557c6e", module.exports)
+  }
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(29)
+/* template */
+var __vue_template__ = __webpack_require__(30)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\DashboardCards.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6687dce6", Component.options)
+  } else {
+    hotAPI.reload("data-v-6687dce6", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "dashboardCards" } },
+    [
+      _c("card-dashboard", {
+        attrs: { link: "/vendas/marcarhorario", texto: "Agendar horario" }
+      }),
+      _vm._v(" "),
+      _c("card-dashboard", {
+        attrs: { link: "/vendas/marcarhorario", texto: "Registrar venda" }
+      }),
+      _vm._v(" "),
+      _c("card-dashboard", {
+        attrs: { link: "/vendas/produtos#cadProd", texto: "Cadastrar produto" }
+      }),
+      _vm._v(" "),
+      _c("cards-venda", {
+        attrs: { valor: "R$ 10.220,69", "nome-campo": "Vendas hoje" }
+      }),
+      _vm._v(" "),
+      _c("cards-venda", {
+        attrs: { valor: "R$ 70.300,55", "nome-campo": "Vendas essa semana" }
+      }),
+      _vm._v(" "),
+      _c("cards-venda", {
+        attrs: { valor: "R$ 185.638,36", "nome-campo": "Vendas esse mês" }
+      }),
+      _vm._v(" "),
+      _c("cards-venda", {
+        attrs: { valor: "R$ 9856,63", "nome-campo": "Média vendas por dia" }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6687dce6", module.exports)
+  }
+}
+
+/***/ }),
+/* 31 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 28 */
+/* 32 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
